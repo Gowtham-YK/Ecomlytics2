@@ -106,3 +106,19 @@ app.mount("/", StaticFiles(directory=".", html=True), name="static")
 - OAuth access tokens for Google Analytics are kept in encrypted SQLite storage on the server.
 - The frontend requests read-only reporting scopes (`analytics.readonly`).
 - All customer identification records are processed locally or within isolated server memory without external tracking pixels.
+
+
+## 6. Deploying the Full App on Render
+
+The FastAPI service also serves the existing frontend files from the project root.
+The public homepage is `index.html`; the application workspace is `app.html`.
+API routes remain under `/api/*` and are registered before the frontend static-file mount.
+
+### Render settings
+
+- **Environment:** Python
+- **Build command:** `pip install -r requirements.txt`
+- **Start command:** `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+- **Health check path:** `/api/health`
+
+The included `render.yaml` contains these settings for Render Blueprint deployment.

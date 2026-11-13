@@ -5,6 +5,8 @@ conversion funnels, rule-based insights, and data source ingestion.
 """
 
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
@@ -253,3 +255,31 @@ def get_ga4_overview():
         "authenticated": False,
         "detail": "OAuth credentials required to stream live session progression."
     }
+
+
+# Serve the existing frontend from the same Render web service.
+# Explicit page routes and asset mounts keep backend source files private.
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+@app.get("/", include_in_schema=False)
+def serve_homepage():
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
+@app.get("/app.html", include_in_schema=False)
+def serve_application():
+    return FileResponse(os.path.join(FRONTEND_DIR, "app.html"))
+
+@app.get("/login.html", include_in_schema=False)
+def serve_login():
+    return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
+
+@app.get("/signup.html", include_in_schema=False)
+def serve_signup():
+    return FileResponse(os.path.join(FRONTEND_DIR, "signup.html"))
+
+@app.get("/forgot-password.html", include_in_schema=False)
+def serve_forgot_password():
+    return FileResponse(os.path.join(FRONTEND_DIR, "forgot-password.html"))
+
+app.mount("/css", StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")), name="css")
+app.mount("/js", StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")), name="js")
