@@ -111,6 +111,12 @@
 
       this.currentView = viewName;
 
+      if (window.ECOMLYTICS_ANALYTICS) {
+        if (viewName === 'overview') window.ECOMLYTICS_ANALYTICS.track('dashboard_viewed');
+        if (viewName === 'funnel') window.ECOMLYTICS_ANALYTICS.track('funnel_viewed');
+        if (viewName === 'customers') window.ECOMLYTICS_ANALYTICS.track('customer_segments_viewed');
+      }
+
       // Update sidebar nav items
       const navItems = document.querySelectorAll('.app-sidebar .nav-item[data-view]');
       navItems.forEach(item => {

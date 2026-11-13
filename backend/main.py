@@ -10,9 +10,97 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
+from pydantic import BaseModel, Field
 from datetime import datetime
 import json
 import os
+
+import base64
+import urllib.request
+import urllib.error
+import uuid
+
+def _env(name: str, default: str = "") -> str:
+    return os.getenv(name, default).strip()
+
+def analytics_status():
+    return {
+        "google_analytics_4": {
+            "name": "Google Analytics 4",
+            "configured": bool(_env("GA4_MEASUREMENT_ID")),
+            "detail": "Browser measurement enabled" if _env("GA4_MEASUREMENT_ID") else "Set GA4_MEASUREMENT_ID"
+        },
+        "mixpanel": {
+            "name": "Mixpanel",
+            "configured": bool(_env("MIXPANEL_PROJECT_TOKEN")),
+            "detail": "Server-side event forwarding enabled" if _env("MIXPANEL_PROJECT_TOKEN") else "Set MIXPANEL_PROJECT_TOKEN"
+        },
+        "posthog": {
+            "name": "PostHog",
+            "configured": bool(_env("POSTHOG_PROJECT_TOKEN")),
+            "detail": "Server-side event forwarding enabled" if _env("POSTHOG_PROJECT_TOKEN") else "Set POSTHOG_PROJECT_TOKEN"
+        },
+        "amplitude": {
+            "name": "Amplitude",
+            "configured": bool(_env("AMPLITUDE_API_KEY")),
+            "detail": "Server-side event forwarding enabled" if _env("AMPLITUDE_API_KEY") else "Set AMPLITUDE_API_KEY"
+        }
+    }
+
+def _post_json(url: str, payload: Any, headers: Optional[dict] = None):
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json", **(headers or {})}, method="POST")
+    with urllib.request.urlopen(req, timeout=5) as response:
+        return response.status
+
+def forward_analytics_event(event_name: str, distinct_id: str, properties: dict):
+    """Best-effort fan-out. A provider outage never blocks the Ecomlytics UI."""
+    results = {}
+    now_ms = int(datetime.utcnow().timestamp() * 1000)
+    common = {k: v for k, v in (properties or {}).items()
+              if k.lower() not in {"email", "password", "phone", "authorization", "token"}}
+    # Mixpanel Track API uses a base64-encoded JSON event payload.
+    token = _env("MIXPANEL_PROJECT_TOKEN")
+    if token:
+        try:
+            event = {"event": event_name, "properties": {"token": token, "distinct_id": distinct_id,
+                     "time": now_ms // 1000, "$insert_id": str(uuid.uuid4()), **common}}
+            encoded = base64.b64encode(json.dumps(event).encode()).decode()
+            req = urllib.request.Request(_env("MIXPANEL_HOST", "https://api.mixpanel.com").rstrip("/") + "/track",
+                data=("data=" + encoded + "&verbose=1").encode(),
+                headers={"Content-Type": "application/x-www-form-urlencoded"}, method="POST")
+            with urllib.request.urlopen(req, timeout=5) as response:
+                results["mixpanel"] = "sent" if response.status == 200 else "error"
+        except Exception as exc:
+            results["mixpanel"] = "error"
+    # PostHog Capture API
+    token = _env("POSTHOG_PROJECT_TOKEN")
+    if token:
+        try:
+            host = _env("POSTHOG_HOST", "https://us.i.posthog.com").rstrip("/")
+            _post_json(host + "/i/v0/e/", {"api_key": token, "event": event_name,
+                "distinct_id": distinct_id, "properties": common})
+            results["posthog"] = "sent"
+        except Exception:
+            results["posthog"] = "error"
+    # Amplitude HTTP V2
+    key = _env("AMPLITUDE_API_KEY")
+    if key:
+        try:
+            url = _env("AMPLITUDE_INGEST_URL", "https://api2.amplitude.com/2/httpapi")
+            _post_json(url, {"api_key": key, "events": [{
+                "user_id": distinct_id, "event_type": event_name, "time": now_ms,
+                "event_properties": common
+            }]})
+            results["amplitude"] = "sent"
+        except Exception:
+            results["amplitude"] = "error"
+    return results
+
+class AnalyticsEvent(BaseModel):
+    event_name: str = Field(min_length=1, max_length=100)
+    distinct_id: str = Field(min_length=1, max_length=128)
+    properties: Dict[str, Any] = Field(default_factory=dict)
 
 app = FastAPI(
     title="Ecomlytics Backend API",
@@ -69,6 +157,30 @@ def get_health():
         "timestamp": datetime.utcnow().isoformat() + "Z"
     }
 
+
+@app.get("/api/analytics/status")
+def get_analytics_status():
+    return analytics_status()
+
+@app.get("/api/telemetry/config")
+def get_telemetry_config():
+    # Measurement ID and project tokens are publishable client identifiers, not secret API credentials.
+    return {
+        "ga4_measurement_id": _env("GA4_MEASUREMENT_ID"),
+        "providers": analytics_status()
+    }
+
+@app.post("/api/events")
+def collect_analytics_event(event: AnalyticsEvent):
+    allowed = {"page_view", "dashboard_viewed", "view_changed", "csv_import_started",
+               "csv_import_completed", "report_viewed", "funnel_viewed", "customer_segments_viewed"}
+    if event.event_name not in allowed:
+        raise HTTPException(status_code=400, detail="Unsupported analytics event")
+    properties = dict(event.properties or {})
+    properties["source"] = "ecomlytics2"
+    properties["timestamp"] = datetime.utcnow().isoformat() + "Z"
+    forwarded = forward_analytics_event(event.event_name, event.distinct_id, properties)
+    return {"success": True, "forwarded": forwarded, "configured": analytics_status()}
 
 @app.get("/api/data-sources")
 def get_data_sources():
@@ -248,12 +360,14 @@ def get_insights():
 
 @app.get("/api/analytics/ga4-overview")
 def get_ga4_overview():
-    """Check GA4 OAuth integration stream"""
+    """Report browser measurement configuration; GA4 Data API OAuth is a separate feature."""
+    configured = bool(_env("GA4_MEASUREMENT_ID"))
     return {
-        "status": "DISCONNECTED",
+        "status": "CONFIGURED" if configured else "DISCONNECTED",
         "service": "Google Analytics 4",
         "authenticated": False,
-        "detail": "OAuth credentials required to stream live session progression."
+        "measurement_configured": configured,
+        "detail": "GA4 browser event collection configured. OAuth/Data API reporting is separate."
     }
 
 

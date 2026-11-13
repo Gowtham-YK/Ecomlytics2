@@ -122,3 +122,7 @@ API routes remain under `/api/*` and are registered before the frontend static-f
 - **Health check path:** `/api/health`
 
 The included `render.yaml` contains these settings for Render Blueprint deployment.
+
+
+## Analytics integrations
+See [docs/analytics-integrations.md](docs/analytics-integrations.md) for GA4, Mixpanel, PostHog and Amplitude setup and verification.

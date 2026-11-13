@@ -48,7 +48,9 @@
 
       // Also check GA4 status
       const ga4Result = await window.ECOMLYTICS_API.getGA4Overview();
-      const ga4Active = ga4Result.success && ga4Result.data && !ga4Result.data.error;
+      const ga4Active = ga4Result.success && ga4Result.data && ga4Result.data.status === 'CONFIGURED';
+      const analyticsResult = await window.ECOMLYTICS_API.getAnalyticsStatus();
+      const analyticsProviders = analyticsResult.success ? analyticsResult.data : {};
 
       const sourcesList = Array.isArray(sourcesData) ? sourcesData : [
         {
@@ -75,6 +77,33 @@
             <div class="view-title">Data Sources & Ingestion</div>
             <div class="view-subtitle">Connect store transaction feeds and analytics pipelines</div>
           </div>
+        </div>
+
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Product Analytics Integrations</div>
+              <div class="card-subtitle">Live environment configuration for event collection</div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-analytics-status">REFRESH STATUS</button>
+          </div>
+          <div class="data-sources-grid">
+            ${Object.entries(analyticsProviders).map(([key, provider]) => `
+              <div class="source-card">
+                <div class="source-card-header">
+                  <div class="source-card-title">${provider.name}</div>
+                  <span class="badge ${provider.configured ? 'badge-high' : 'badge-low'}">
+                    ${provider.configured ? 'CONFIGURED' : 'NOT CONFIGURED'}
+                  </span>
+                </div>
+                <p class="source-card-desc">${provider.detail}</p>
+              </div>
+            `).join('')}
+          </div>
+          <p class="text-mono text-muted" style="font-size: 10px; margin-top: 12px;">
+            Configured means required environment variables are present; verify delivery in each provider's live events/debugger.
+          </p>
         </div>
 
         <div class="card" style="margin-bottom: 32px;">
@@ -139,16 +168,16 @@
               </span>
             </div>
             <p class="source-card-desc">
-              Connect your GA4 Property ID via Google OAuth 2.0 to stream real session progression, add-to-cart ratios, and checkout drop-off rates.
+              Collect browser events using your GA4 Measurement ID. GA4 Data API OAuth reporting is a separate integration.
             </p>
 
             <div style="background-color: var(--surface-elevated); padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; margin-bottom: 16px;">
               <div class="form-group" style="margin-bottom: 10px;">
-                <label class="form-label" style="font-size: 10px;">GA4 Property ID</label>
-                <input type="text" class="form-control" id="ga4-property-id" placeholder="e.g. 123456789" style="font-size: 12px; padding: 8px 12px;">
+                <label class="form-label" style="font-size: 10px;">GA4 Measurement ID (configured in Render)</label>
+                <input type="text" class="form-control" id="ga4-property-id" placeholder="e.g. G-XXXXXXXXXX" style="font-size: 12px; padding: 8px 12px;">
               </div>
               <div class="text-mono text-muted" style="font-size: 10px;">
-                Protected OAuth tokens stored with AES-encrypted storage.
+                Set GA4_MEASUREMENT_ID in the Render environment to enable browser collection.
               </div>
             </div>
 
@@ -157,7 +186,7 @@
                 ${ga4Active ? 'OAuth Active' : 'OAuth Credentials Required'}
               </span>
               <button type="button" class="btn ${ga4Active ? 'btn-secondary' : 'btn-primary'} btn-sm" id="btn-ga4-action">
-                ${ga4Active ? 'DISCONNECT' : 'CONNECT GA4'}
+                ${ga4Active ? 'DISCONNECT' : 'CHECK GA4'}
               </button>
             </div>
           </div>
@@ -273,26 +302,21 @@
         });
       }
 
-      // GA4 action binding
+      // GA4 status action: browser collection is configured through Render environment.
       const ga4Btn = document.getElementById('btn-ga4-action');
       if (ga4Btn) {
-        ga4Btn.addEventListener('click', () => {
-          const propInput = document.getElementById('ga4-property-id');
-          if (ga4Active) {
-            if (confirm('Disconnect GA4 data stream?')) {
-              alert('GA4 stream disconnected.');
-              DataSources.loadDataSources(container);
-            }
-          } else {
-            const propId = propInput ? propInput.value.trim() : '';
-            if (!propId) {
-              alert('Please enter your GA4 Property ID first.');
-              return;
-            }
-            alert(`Initiating Google OAuth authorization for Property ID: ${propId}. Backend endpoint /api/analytics/ga4-overview will verify access tokens.`);
-          }
+        ga4Btn.addEventListener('click', async () => {
+          const latest = await window.ECOMLYTICS_API.getGA4Overview();
+          const configured = latest.success && latest.data && latest.data.status === 'CONFIGURED';
+          alert(configured
+            ? 'GA4 Measurement ID is configured. Generate activity in Ecomlytics and verify events in GA4 Realtime.'
+            : 'Set GA4_MEASUREMENT_ID in Render Environment Variables, then redeploy.');
+          DataSources.loadDataSources(container);
         });
       }
+
+      const refreshAnalyticsBtn = document.getElementById('btn-refresh-analytics-status');
+      if (refreshAnalyticsBtn) refreshAnalyticsBtn.addEventListener('click', () => DataSources.loadDataSources(container));
 
       const refreshAllBtn = document.getElementById('btn-refresh-all-sources');
       if (refreshAllBtn) {

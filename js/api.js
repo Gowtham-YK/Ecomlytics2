@@ -166,6 +166,11 @@
     async getGA4Overview() {
       return await this._request(window.ECOMLYTICS_CONFIG.ENDPOINTS.GA4_OVERVIEW);
     }
+
+    ,
+    async getAnalyticsStatus() {
+      return await this._request(window.ECOMLYTICS_CONFIG.ENDPOINTS.ANALYTICS_STATUS);
+    }
   };
 
   window.ECOMLYTICS_API = API;

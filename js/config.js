@@ -32,7 +32,8 @@
       FUNNEL: '/api/funnel',
       INSIGHTS: '/api/insights',
       DATA_SOURCES: '/api/data-sources',
-      GA4_OVERVIEW: '/api/analytics/ga4-overview'
+      GA4_OVERVIEW: '/api/analytics/ga4-overview',
+      ANALYTICS_STATUS: '/api/analytics/status'
     },
     
     // Request timeout in milliseconds
