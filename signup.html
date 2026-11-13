@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Started — Ecomlytics Onboarding</title>
+  <meta name="description" content="Set up your store workspace on Ecomlytics Decision Platform.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .onboarding-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      background-color: var(--background);
+      position: relative;
+    }
+    .onboarding-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+    .onboarding-container {
+      width: 100%;
+      max-width: 520px;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl);
+      position: relative;
+      z-index: 1;
+    }
+    .onboarding-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-2xl);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: var(--space-md);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .step-item.active {
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+    .step-item.completed {
+      color: var(--text-secondary);
+    }
+    .onboarding-step-view {
+      display: none;
+    }
+    .onboarding-step-view.active {
+      display: block;
+      animation: view-fade 0.25s ease-out;
+    }
+    @keyframes view-fade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="onboarding-page">
+
+  <div class="onboarding-container">
+    <div style="text-align: center; margin-bottom: var(--space-xl);">
+      <a href="index.html" class="brand-wordmark" style="font-size: 1.125rem;">ECOMLYTICS</a>
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; font-family: var(--font-mono);">
+        ONBOARDING & WORKSPACE SETUP
+      </div>
+    </div>
+
+    <!-- Stepper Indicator -->
+    <div class="onboarding-stepper">
+      <span class="step-item active" id="indicator-1">01 ACCOUNT</span>
+      <span>→</span>
+      <span class="step-item" id="indicator-2">02 WELCOME</span>
+      <span>→</span>
+      <span class="step-item" id="indicator-3">03 DATA SOURCE</span>
+    </div>
+
+    <!-- STEP 1: CREATE ACCOUNT -->
+    <div class="onboarding-step-view active" id="step-view-1">
+      <div style="margin-bottom: 20px;">
+        <h2 style="font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.06em; margin-bottom: 6px;">
+          CREATE WORKSPACE
+        </h2>
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;">
+          Set up your organization credentials to begin analyzing store data.
+        </p>
+      </div>
+
+      <form id="signup-form">
+        <div class="form-group">
+          <label class="form-label" for="signup-name">Your Full Name</label>
+          <input type="text" id="signup-name" class="form-control" placeholder="Alex Morgan" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signup-email">Work Email</label>
+          <input type="email" id="signup-email" class="form-control" placeholder="alex@store.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signup-store">E-Commerce Store / Brand Name</label>
+          <input type="text" id="signup-store" class="form-control" placeholder="Acme Goods" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signup-password">Password</label>
+          <input type="password" id="signup-password" class="form-control" placeholder="••••••••••••" required minlength="8">
+        </div>
+
+        <div style="margin-top: 24px;">
+          <button type="submit" class="btn btn-primary w-full">CONTINUE TO WELCOME</button>
+        </div>
+      </form>
+
+      <div style="margin-top: 20px; text-align: center; font-size: 0.8125rem; color: var(--text-muted);">
+        Already have an account? <a href="login.html" style="color: #FFFFFF; text-decoration: underline;">Sign In</a>
+      </div>
+    </div>
+
+    <!-- STEP 2: WELCOME -->
+    <div class="onboarding-step-view" id="step-view-2">
+      <div style="text-align: center; padding: 12px 0 24px;">
+        <div class="eyebrow" style="margin-bottom: 12px;">WORKSPACE CREATED</div>
+        <h2 style="font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.06em; margin-bottom: 12px;">
+          WELCOME TO ECOMLYTICS
+        </h2>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; max-width: 440px; margin: 0 auto 24px;">
+          Your workspace is provisioned. Ecomlytics operates on verified business records: sales, SKUs, and sessions. Next, attach a primary data feed.
+        </p>
+
+        <div style="background-color: var(--surface-elevated); border: 1px solid var(--border); padding: 16px; border-radius: 4px; text-align: left; margin-bottom: 24px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">PRINCIPLE</div>
+          <div style="font-size: 0.8125rem; color: var(--text-primary); font-weight: 500;">
+            No placeholder numbers or mock metrics will ever be displayed. Your workspace loads real store transactions.
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary w-full" id="btn-goto-step-3">
+          PROCEED TO CONNECT DATA SOURCE
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: CONNECT DATA SOURCE -->
+    <div class="onboarding-step-view" id="step-view-3">
+      <div style="margin-bottom: 20px;">
+        <h2 style="font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.06em; margin-bottom: 6px;">
+          CONNECT FIRST DATA SOURCE
+        </h2>
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;">
+          Select how you would like to import sales transactions or funnel sessions into your workspace.
+        </p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+        <label style="border: 1px solid var(--border); padding: 16px; border-radius: 4px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; background-color: var(--surface-elevated);">
+          <input type="radio" name="source-choice" value="csv" checked style="margin-top: 3px;">
+          <div>
+            <div style="font-family: var(--font-display); font-size: 0.875rem; color: var(--text-primary); letter-spacing: 0.06em;">
+              STORE CSV EXPORT
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">
+              Upload order transactions, product line items, and customer IDs from Shopify, WooCommerce, or custom export.
+            </div>
+          </div>
+        </label>
+
+        <label style="border: 1px solid var(--border); padding: 16px; border-radius: 4px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; background-color: var(--surface-elevated);">
+          <input type="radio" name="source-choice" value="ga4" style="margin-top: 3px;">
+          <div>
+            <div style="font-family: var(--font-display); font-size: 0.875rem; color: var(--text-primary); letter-spacing: 0.06em;">
+              GOOGLE ANALYTICS 4 (GA4)
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">
+              Connect GA4 via OAuth 2.0 to stream product view, add-to-cart, and checkout funnel progression.
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" class="btn btn-primary w-full" id="btn-enter-workspace">
+          ENTER ANALYTICS WORKSPACE
+        </button>
+        <button type="button" class="btn btn-ghost w-full" id="btn-skip-to-workspace" style="font-size: 11px;">
+          Skip for now (Connect later in Data Sources)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); z-index: 1;">
+    <a href="index.html" style="color: var(--text-muted); text-decoration: none;">← Return to Ecomlytics Homepage</a>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const form = document.getElementById('signup-form');
+    const step1 = document.getElementById('step-view-1');
+    const step2 = document.getElementById('step-view-2');
+    const step3 = document.getElementById('step-view-3');
+
+    const ind1 = document.getElementById('indicator-1');
+    const ind2 = document.getElementById('indicator-2');
+    const ind3 = document.getElementById('indicator-3');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const store = document.getElementById('signup-store').value.trim();
+      const password = document.getElementById('signup-password').value;
+
+      await window.ECOMLYTICS_AUTH.signup(name, email, password, store);
+
+      // Transition to Step 2
+      step1.classList.remove('active');
+      step2.classList.add('active');
+      ind1.classList.remove('active');
+      ind1.classList.add('completed');
+      ind2.classList.add('active');
+    });
+
+    document.getElementById('btn-goto-step-3').addEventListener('click', function() {
+      step2.classList.remove('active');
+      step3.classList.add('active');
+      ind2.classList.remove('active');
+      ind2.classList.add('completed');
+      ind3.classList.add('active');
+    });
+
+    document.getElementById('btn-enter-workspace').addEventListener('click', function() {
+      // Directs to Data Sources view in app workspace
+      window.location.href = 'app.html#data-sources';
+    });
+
+    document.getElementById('btn-skip-to-workspace').addEventListener('click', function() {
+      // Directs to Overview in app workspace
+      window.location.href = 'app.html#overview';
+    });
+  </script>
+</body>
+</html>

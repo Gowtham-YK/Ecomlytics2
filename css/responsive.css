@@ -1,0 +1,221 @@
+/* ==========================================================================
+   ECOMLYTICS — RESPONSIVE ADAPTATIONS
+   Tested across 1440px, 1280px, 1024px, 768px, 480px, 375px
+   ========================================================================== */
+
+/* --- 1280px and below (Laptops) --- */
+@media (max-width: 1280px) {
+  .workflow-steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .metrics-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- 1024px and below (Small Laptops & Tablets Landscape) --- */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+  
+  .hero-visual {
+    max-width: 480px;
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .pricing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .pricing-card.featured {
+    order: -1;
+    grid-column: 1 / -1;
+  }
+  
+  .security-card {
+    grid-template-columns: 1fr;
+  }
+  
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .value-prop-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .data-sources-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- 768px and below (Tablets Portrait & Mobile) --- */
+@media (max-width: 768px) {
+  /* Public Nav */
+  .nav-links, .nav-actions .btn-secondary {
+    display: none;
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  /* App Shell */
+  .app-sidebar {
+    transform: translateX(-100%);
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.9);
+  }
+  
+  .app-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .app-main {
+    margin-left: 0;
+  }
+  
+  .mobile-sidebar-toggle {
+    display: block;
+  }
+  
+  /* Grids */
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .workflow-steps-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metrics-grid-4, .metrics-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .workflow-visual-flow-bar {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+  
+  .flow-divider {
+    transform: rotate(90deg);
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .footer-brand-col {
+    grid-column: 1 / -1;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--space-md);
+    text-align: center;
+  }
+  
+  .funnel-stage-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .funnel-drop-indicator {
+    padding-left: 0;
+  }
+  
+  .funnel-stage-stats {
+    align-items: flex-start;
+  }
+}
+
+/* --- 480px and below (Mobile Phones) --- */
+@media (max-width: 480px) {
+  :root {
+    --space-2xl: 32px;
+    --space-3xl: 40px;
+    --space-4xl: 56px;
+    --space-5xl: 72px;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-actions .btn {
+    width: 100%;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .app-content {
+    padding: var(--space-md);
+  }
+  
+  .app-topbar {
+    padding: 0 var(--space-md);
+  }
+  
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-input-wrapper {
+    max-width: 100%;
+  }
+
+  .closing-cta-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .closing-cta-actions .btn {
+    width: 100%;
+  }
+}
+
+/* --- 375px and below (Small Mobile Phones) --- */
+@media (max-width: 375px) {
+  .metric-value {
+    font-size: 1.75rem;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+  }
+  
+  .site-logo {
+    font-size: 0.95rem;
+  }
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Ecomlytics Workspace</title>
+  <meta name="description" content="Sign in to your Ecomlytics decision platform workspace.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      background-color: var(--background);
+      position: relative;
+    }
+    .auth-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2xl);
+      position: relative;
+      z-index: 1;
+    }
+    .auth-logo-header {
+      margin-bottom: var(--space-2xl);
+      text-align: center;
+    }
+    .auth-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .auth-subtitle {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .auth-footer {
+      margin-top: var(--space-xl);
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+    .auth-link {
+      color: var(--text-primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .auth-error {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 14px;
+      border-radius: var(--radius-xs);
+      font-size: 0.8125rem;
+      color: #FFFFFF;
+      margin-bottom: var(--space-md);
+      display: none;
+    }
+  </style>
+</head>
+<body class="auth-page">
+
+  <div class="auth-card">
+    <div class="auth-logo-header">
+      <a href="index.html" class="auth-logo">ECOMLYTICS</a>
+      <div class="auth-subtitle">E-commerce Decision Platform</div>
+    </div>
+
+    <div class="auth-error" id="auth-error-msg"></div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label" for="login-email">Account Email</label>
+        <input type="email" id="login-email" class="form-control" placeholder="name@store.com" required autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label class="form-label" for="login-password">Password</label>
+          <a href="forgot-password.html" class="auth-link" style="font-size: 11px; text-decoration: none; color: var(--text-muted);">Forgot?</a>
+        </div>
+        <input type="password" id="login-password" class="form-control" placeholder="••••••••••••" required autocomplete="current-password">
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button type="submit" class="btn btn-primary w-full" id="login-submit-btn">SIGN IN</button>
+      </div>
+    </form>
+
+    <div class="auth-footer">
+      Don't have a workspace? <a href="signup.html" class="auth-link">Create an account</a>
+    </div>
+  </div>
+
+  <div style="margin-top: 24px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); z-index: 1;">
+    <a href="index.html" style="color: var(--text-muted); text-decoration: none;">← Return to Ecomlytics Homepage</a>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const errorBox = document.getElementById('auth-error-msg');
+      const submitBtn = document.getElementById('login-submit-btn');
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'SIGNING IN...';
+
+      const result = await window.ECOMLYTICS_AUTH.login(email, password);
+
+      if (result.success) {
+        window.location.href = 'app.html';
+      } else {
+        errorBox.textContent = result.error || 'Authentication failed. Please verify credentials.';
+        errorBox.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'SIGN IN';
+      }
+    });
+  </script>
+</body>
+</html>

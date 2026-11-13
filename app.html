@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace — Ecomlytics Analytics</title>
+  <meta name="description" content="Ecomlytics Decision Platform Workspace. Sales, product, customer segments, funnel analytics and business insights.">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="app-shell">
+
+  <!-- APP SIDEBAR -->
+  <aside class="app-sidebar" role="navigation" aria-label="Application Sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-logo">ECOMLYTICS</a>
+    </div>
+
+    <div class="sidebar-nav">
+      <!-- Main Overview -->
+      <a href="#overview" class="nav-item active" data-view="overview">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>Overview</span>
+      </a>
+
+      <!-- ANALYTICS SECTION -->
+      <div class="nav-section-label">ANALYTICS</div>
+
+      <a href="#sales" class="nav-item" data-view="sales">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        <span>Sales</span>
+      </a>
+
+      <a href="#products" class="nav-item" data-view="products">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span>Products</span>
+      </a>
+
+      <a href="#customers" class="nav-item" data-view="customers">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span>Customers</span>
+      </a>
+
+      <a href="#funnel" class="nav-item" data-view="funnel">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </svg>
+        <span>Funnel</span>
+      </a>
+
+      <!-- INTELLIGENCE SECTION -->
+      <div class="nav-section-label">INTELLIGENCE</div>
+
+      <a href="#insights" class="nav-item" data-view="insights">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>Insights</span>
+      </a>
+
+      <!-- DATA SECTION -->
+      <div class="nav-section-label">DATA</div>
+
+      <a href="#data-sources" class="nav-item" data-view="data-sources">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+        </svg>
+        <span>Data Sources</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- UTILITIES -->
+      <a href="#settings" class="nav-item" data-view="settings">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span>Settings</span>
+      </a>
+
+      <a href="#settings" class="nav-item" data-view="settings">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Account</span>
+      </a>
+
+      <a href="#" class="nav-item" data-action="logout">
+        <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>Logout</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="text-mono text-muted" style="font-size: 10px;">ECOMLYTICS v1.0.0</div>
+      <div class="text-muted" style="font-size: 11px;">Production Workspace</div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div class="app-main">
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div class="topbar-left">
+        <button type="button" class="mobile-sidebar-toggle" aria-label="Toggle menu">☰</button>
+        <h1 class="page-title" id="topbar-page-title">OVERVIEW</h1>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Backend Connection Pill -->
+        <div class="connection-pill" id="backend-connection-badge">
+          <span class="connection-dot offline" id="status-dot-indicator"></span>
+          <span id="status-text-indicator">CHECKING API...</span>
+        </div>
+
+        <!-- Global Refresh Button -->
+        <button type="button" class="btn btn-secondary btn-sm" id="global-sync-btn" title="Sync & Refresh Backend Data">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>SYNC</span>
+        </button>
+
+        <a href="#settings" class="btn btn-ghost btn-sm" style="font-family: var(--font-mono); font-size: 11px;">
+          STORE OWNER
+        </a>
+      </div>
+    </header>
+
+    <!-- Content Workspace Views -->
+    <main class="app-content">
+      <!-- 1. OVERVIEW VIEW -->
+      <section id="view-overview" class="app-view active">
+        <!-- Rendered by js/dashboard.js -->
+      </section>
+
+      <!-- 2. SALES VIEW -->
+      <section id="view-sales" class="app-view">
+        <!-- Rendered by js/sales.js -->
+      </section>
+
+      <!-- 3. PRODUCTS VIEW -->
+      <section id="view-products" class="app-view">
+        <!-- Rendered by js/products.js -->
+      </section>
+
+      <!-- 4. CUSTOMERS VIEW -->
+      <section id="view-customers" class="app-view">
+        <!-- Rendered by js/customers.js -->
+      </section>
+
+      <!-- 5. FUNNEL VIEW -->
+      <section id="view-funnel" class="app-view">
+        <!-- Rendered by js/funnel.js -->
+      </section>
+
+      <!-- 6. INSIGHTS VIEW -->
+      <section id="view-insights" class="app-view">
+        <!-- Rendered by js/insights.js -->
+      </section>
+
+      <!-- 7. DATA SOURCES VIEW -->
+      <section id="view-data-sources" class="app-view">
+        <!-- Rendered by js/dataSources.js -->
+      </section>
+
+      <!-- 8. SETTINGS VIEW -->
+      <section id="view-settings" class="app-view">
+        <!-- Rendered by js/settings.js -->
+      </section>
+    </main>
+  </div>
+
+  <!-- Centralized Script Pipeline -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/sales.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/customers.js"></script>
+  <script src="js/funnel.js"></script>
+  <script src="js/insights.js"></script>
+  <script src="js/dataSources.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
